@@ -13,23 +13,25 @@ public class PlayerMovement : MonoBehaviour
 	private Vector2 _forceToBeAdded;
 	private bool _grounded;
 	private bool _facingRight;
+	private bool _idle;
 	private bool _jumpRequest;
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Input.GetButton("Jump"))
+		if (Input.GetButtonDown("Jump"))
+			
 			_jumpRequest = true;
 		Move();
 	}
 	
-	//Called for base movment TODO Create a way to slow or deden the player
+	//Called for base movment 
 	private void Move()
 	{
 		float h = Input.GetAxis("Horizontal");
-		if (h * Player.GetComponent<Rigidbody2D>().velocity.x < MaxSpeed)
+		if (h * Player.GetComponent<Rigidbody2D>().velocity.x < MaxSpeed && h != 0)
 			Player.GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * Speed );
-		if (h * Player.GetComponent<Rigidbody2D>().velocity.x > MaxSpeed)
+		if (h * Player.GetComponent<Rigidbody2D>().velocity.x > MaxSpeed && h != 0)
 			Player.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(Player.GetComponent<Rigidbody2D>().velocity.x) * MaxSpeed, Player.GetComponent<Rigidbody2D>().velocity.y);
 
 		if (h == 0)
@@ -43,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
 			Flip();
 		if (_jumpRequest)
 		{
-			Player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, Jump));
+			Player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, Jump), ForceMode2D.Impulse);
 			_jumpRequest = false;
 		}
 	}
@@ -59,5 +61,10 @@ public class PlayerMovement : MonoBehaviour
 	public bool IsGrounded()
 	{
 		return _grounded;
+	}
+
+	private void Idle()
+	{
+		_idle = true;
 	}
 }
