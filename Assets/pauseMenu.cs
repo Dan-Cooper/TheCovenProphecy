@@ -55,15 +55,15 @@ public class pauseMenu : MonoBehaviour {
         Debug.Log("...Loading menu...");
 
         //load menu scene
-        SceneManager.LoadScene("MainMenu00");
-
-        //time scale to normal
-        Time.timeScale = 1f;
+        SceneManager.LoadScene("Settings00");
     }
 
     //exit game
     public void quitGame() {
         Debug.Log("...Quitting game...");
+
+        SceneManager.LoadScene("MainMenu00");
+
         Application.Quit();
     }
 }
